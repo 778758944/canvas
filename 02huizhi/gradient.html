@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs"></canvas>
+    <script>
+    //绘制渐变
+    var cvs=document.getElementById("cvs");
+    var ctx=cvs.getContext("2d");
+    var gradient=ctx.createLinearGradient(0,0,cvs.width,0);
+    gradient.addColorStop(0,"blue");
+    gradient.addColorStop(0.25,"yellow");
+    gradient.addColorStop(0.5,"purple");
+    gradient.addColorStop(0.75,"red");
+    gradient.addColorStop(1,"green");
+
+    var gradient2=ctx.createRadialGradient(cvs.width/2,cvs.height,10,cvs.width/2,0,100);
+
+    gradient2.addColorStop(0,"blue");
+    gradient2.addColorStop(0.25,"yellow");
+    gradient2.addColorStop(0.5,"purple");
+    gradient2.addColorStop(0.75,"red");
+    gradient2.addColorStop(1,"green");
+    ctx.fillStyle=gradient2;
+    ctx.rect(0,0,cvs.width,cvs.height);
+    ctx.fill();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

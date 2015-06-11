@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <div id="opt">
+    	<input type="radio" name="opt" value="repeat">repeat
+    	<input type="radio" name="opt" value="repeat-x">repeat-x
+    	<input type="radio" name="opt" value="repeat-y">repeat-y
+    	<input type="radio" name="opt" value="no-repeat">no-repeat
+    </div>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs");
+    var opt=document.getElementById("opt");
+    opt.onclick=function(){//事件代理
+    	var radios=document.getElementsByName("opt"),
+    	repeat;
+    	console.log(radios);
+    	for(var i=0;i<radios.length;i++){
+    		if(radios[i].checked){
+    			repeat=radios[i].value;
+    			break;
+    		}
+    	}
+    	fillrect(repeat);
+    }
+    var ctx=cvs.getContext("2d");
+    var img=new Image();
+    function fillrect(m){
+    	var pattern=ctx.createPattern(img,m);
+    	ctx.clearRect(0,0,cvs.width,cvs.height);
+    	ctx.fillStyle=pattern;
+    	ctx.fillRect(20,20,200,200);//创建图形
+    	// ctx.fill();
+
+    }
+    img.onload=function(){
+    	fillrect("repeat");
+    }
+    img.src="panda.png";
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<img id="snapshot"/>
+    <canvas id="clock" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("clock"),
+    ctx=cvs.getContext("2d"),
+    font_height=15,
+    margin=35,
+    hand_truncation=cvs.width/25,
+    hour_truncation=cvs.width/10,
+    number_spacing=20,
+    radius=cvs.width/2-margin,
+    hand_radius=radius+number_spacing;
+    var img=document.getElementById('snapshot');
+    function drawCircle(){
+    	//绘制钟盘
+    	ctx.save();
+    	ctx.strokeStyle="#000";
+    	ctx.beginPath();
+    	ctx.arc(cvs.width/2,cvs.height/2,radius,0,Math.PI*2,true);
+    	ctx.stroke();
+    	ctx.closePath();
+    	ctx.restore();
+
+    }
+    function drawNumbers(){
+    	//绘制时间数字
+    	var arr=[3,4,5,6,7,8,9,10,11,12,1,2,],
+    	    hd,x,y;
+    	ctx.save();
+    	ctx.fillStyle="#000";
+    	for(var i=0;i<arr.length;i++){
+    		hd=Math.PI/6*i;
+    		x=cvs.width/2+radius*Math.cos(hd);
+    		y=cvs.height/2+radius*Math.sin(hd);
+    		ctx.fillText(arr[i],x,y);
+    	}
+    	ctx.restore();
+    }
+    function drawCenter(){
+    	//绘制中心
+    	ctx.save();
+    	ctx.fillStyle="#000";
+    	ctx.beginPath();
+    	ctx.arc(cvs.width/2,cvs.height/2,2,0,Math.PI*2,true);
+    	ctx.fill();
+    	ctx.closePath();
+    	ctx.restore();
+
+    }
+    function drawHand(len,angle){
+    	//绘制指针
+    	var x,y;
+    	x=len*Math.cos(angle)+cvs.width/2;
+    	y=len*Math.sin(angle)+cvs.height/2;
+    	ctx.save();
+    	ctx.strokeStyle="#000";
+    	ctx.lineWidth=1;
+    	ctx.moveTo(cvs.width/2,cvs.height/2);
+    	ctx.lineTo(x,y);
+    	ctx.stroke();
+    	ctx.restore();
+    }
+    function drawHands(){
+    	var time=new Date();
+    	var hour=time.getHours();
+    	var min=time.getMinutes();
+    	var seconds=time.getSeconds();
+    	console.log(seconds);
+    	var hangle=Math.PI*(hour/12)*2-Math.PI/2;
+    	var mangle=Math.PI*(min/60)*2-Math.PI/2;
+    	var sangle=Math.PI*(seconds/60)*2-Math.PI/2;
+    	drawHand(radius-10,sangle);
+    	drawHand(radius-50,mangle);
+    	drawHand(radius-100,hangle);
+
+    }
+    function drawClock(){
+    	ctx.clearRect(0,0,cvs.width,cvs.height);
+	    drawCircle();
+	    drawNumbers();
+	    drawCenter();
+	    drawHands();
+	    updateurl();
+    }
+    function updateurl(){
+    	var url=cvs.toDataURL();
+    	img.src=url;
+    }
+
+    ctx.font="10px Arial";
+    setInterval(drawClock,1000);
+    </script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs");
+    var ctx=cvs.getContext("2d");
+    ctx.lineWidth=20;
+    ctx.lineCap="round";
+    ctx.lineCap="square";//控制线段端点
+    ctx.moveTo(100,100);
+    ctx.lineTo(100,200);
+    ctx.stroke();
+    ctx.lineJoin="bevel";
+    // ctx.lineJoin="round";
+    // ctx.lineJoin="miter";
+
+
+    // ctx.moveTo(100,200);
+    ctx.lineTo(200,100);
+    ctx.stroke();
+
+    ctx.strokeRect(300,300,100,100);
+
+    </script>
+</body>
+</html>
