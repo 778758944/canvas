@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs");
+    var ctx=cvs.getContext("2d");
+    function drawText(){
+    	ctx.save();
+    	ctx.font="100px Arial";
+    	ctx.fillStyle="#f00";
+    	ctx.fillText("HTML5",100,100);
+    	ctx.restore();
+    }
+
+    function fillCvs(color){
+    	ctx.fillStyle=color;
+    	ctx.fillRect(0,0,cvs.width,cvs.height);
+    }
+
+    function setClippingRegion(radius){
+    	ctx.beginPath();
+    	ctx.arc(cvs.width/2,cvs.height/2,radius,0,Math.PI*2,false);
+    	ctx.clip();
+    }
+    function endAni(loop){
+    	clearInterval(loop);
+    	setTimeout(function(e){
+    		ctx.clearRect(0,0,cvs.width,cvs.height);
+    		drawText();
+    	},1000);
+    }
+    function drawAni(radius){
+    	setClippingRegion(radius);
+    	fillCvs("lightgray");
+    	drawText();
+    }
+    function animate(){
+    	var radius=cvs.width/2,
+    	    loop;
+    	loop=setInterval(function(){
+    		radius=radius-cvs.width/100;
+    		fillCvs("charcoal");
+    		if(radius>0){
+    			ctx.save();
+    			drawAni(radius);
+    			ctx.restore();
+    		}else{
+    			endAni(loop);
+    		}
+    	},16)
+    }
+    cvs.onclick=function(e){
+    	animate();
+    }
+    ctx.lineWidth=0.5;
+    ctx.font="100px Arial";
+    drawText();
+    </script>
+</body>
+</html>
