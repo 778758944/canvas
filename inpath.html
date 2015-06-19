@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="lib/polygon.js"></script>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs");
+    var ctx=cvs.getContext("2d");
+    var edit=false,imageData,
+        mousedown={},polygons=[],polygon,drag,
+        inarr=false;
+    function windowToCanvas(x,y){
+    	var box=cvs.getBoundingClientRect();
+    	return {
+    		x:x-box.left,
+    		y:y-box.top
+    	}
+    }
+    cvs.onmousedown=function(e){
+    	mousedown=windowToCanvas(e.pageX,e.pageY);
+    	if(edit){
+    		if(ctx.isPointInPath(mousedown.x,mousedown.y)){
+    			drag=true;
+    		}
+
+    	}else{
+    		imageData=ctx.getImageData(0,0,cvs.width,cvs.height);
+    		edit=true;
+    	}
+    	cvs.onmousemove=function(e){
+    		var loc=windowToCanvas(e.pageX,e.pageY);
+    		var disx=mousedown.x-loc.x;
+    		var disy=mousedown.y-loc.y;
+    		if(drag){
+    			ctx.clearRect(0,0,cvs.width,cvs.height);
+    			mousedown.x=loc.x;
+	    		mousedown.y=loc.y;
+    			polygon.x=polygon.x-disx;
+    			polygon.y=polygon.y-disy;
+    			polygon.getPath(ctx);
+    			polygon.getStroke(ctx);
+    		}else{
+    			inarr=true;
+    			ctx.putImageData(imageData,0,0);
+    			var radius=Math.sqrt(Math.pow(disx,2)+Math.pow(disy,2));
+    			polygon=new Polygon(mousedown.x,mousedown.y,radius,5,0,"#f00","#00f");
+    			polygon.getPath(ctx);
+    			polygon.getStroke(ctx);
+    		}
+    	}
+    	cvs.onmouseup=function(){
+    		cvs.onmousemove=null;
+    		cvs.onmouseup=null;
+    		if(inarr){
+    			polygons.push(polygon);
+    			inarr=false;
+    		}
+
+    	}
+    }
+
+    </script>
+</body>
+</html>

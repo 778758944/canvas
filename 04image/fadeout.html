@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500">
+    	
+    </canvas>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        imgData1,
+        imgData2,
+        img=new Image();
+    img.onload=function(){
+    	ctx.drawImage(img,0,0);
+    	imgData1=ctx.getImageData(0,0,cvs.width,cvs.height);
+        imgData2=ctx.getImageData(0,0,cvs.width,cvs.height);
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        fadeout(100);
+    }
+    function fadeout(steps){
+        // alert("lp");
+        var message={
+            data1:imgData1,
+            data2:imgData2,
+            step:steps,
+        }
+        // console.log(message);
+    	var fadeoutWork=new Worker("fadeout.js");
+        fadeoutWork.postMessage(message);
+        fadeoutWork.onmessage=function(e){
+            console.log("jj");
+            console.log(e.data.data[3]);
+            ctx.clearRect(0,0,cvs.width,cvs.height);
+            ctx.putImageData(e.data,0,0);
+        }
+    }
+    img.src="countrypath.jpg";
+
+    </script>
+</body>
+</html>

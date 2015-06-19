@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="1000" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById('cvs'),
+        ctx=cvs.getContext("2d"),
+        img_sky=new Image,
+        img_tree1=new Image,
+        img_tree2=new Image,
+        img_grass1=new Image,
+        img_grass2=new Image,
+        pos_sky=0,
+        pos_grass1=0,
+        pos_grass2=0,
+        pos_tree1=0,
+        pos_tree2=0,
+        pos_skys=17,
+        pos_tree1s=20,
+        pos_tree2s=30,
+        pos_grass1s=25,
+        pos_grass2s=35,
+        lastupdate=0,
+        fps=60,
+        width=cvs.width,
+        height=cvs.height,
+        pause=false,
+        timer;
+        function clear(){
+        	ctx.clearRect(0,0,width,height);
+        }
+        function draw(){
+        	console.log("kk");
+        	var now=new Date();
+        	fps=caultion(now);
+        	pos_sky=pos_sky<width? pos_sky+pos_skys/fps : 0;
+        	pos_tree1=pos_sky<width? pos_tree1+pos_tree1s/fps : 0;
+        	pos_tree2=pos_tree2<width ? pos_tree2+pos_tree2s/fps:0;
+        	pos_grass1=pos_grass1<width? pos_grass1+pos_grass1s/fps:0;
+        	pos_grass2=pos_grass2<width? pos_grass2+pos_grass2s/fps:0;
+
+        	ctx.save();
+        	ctx.translate(-pos_sky,0);
+        	ctx.drawImage(img_sky,0,0);
+        	ctx.drawImage(img_sky,width-2,0);
+        	ctx.restore();
+
+        	ctx.save();
+        	ctx.translate(-pos_tree1,0);
+        	// ctx.drawImage(img_tree1,0,240);
+        	ctx.drawImage(img_tree1,400,300);
+        	ctx.drawImage(img_tree1,1400,300);
+        	ctx.drawImage(img_tree1,100,300);
+        	ctx.drawImage(img_tree1,1100,300);
+        	ctx.restore();
+
+        	ctx.save();
+        	ctx.translate(-pos_tree2,0);
+        	ctx.drawImage(img_tree2,250,250);
+        	ctx.drawImage(img_tree2,1250,250);
+        	ctx.drawImage(img_tree2,800,250);
+        	ctx.drawImage(img_tree2,1800,250);
+        	ctx.restore();
+
+        	ctx.save();
+        	ctx.translate(-pos_grass1,0);
+        	ctx.drawImage(img_grass1,0,height-img_grass1.height);
+        	ctx.drawImage(img_grass1,width-2,height-img_grass1.height);
+        	ctx.drawImage(img_grass2,0,height-img_grass2.height);
+        	ctx.drawImage(img_grass2,width,height-img_grass2.height);
+        	ctx.restore();
+
+        }
+        function caultion(now){
+        	fps=1000/(now-lastupdate);
+        	lastupdate=now;
+        	return fps;
+        }
+        function animate(){
+        	if(pause){
+        		cancelAnimationFrame(timer);
+        	}else{
+        		clear();
+        		draw();
+        		timer=requestAnimationFrame(animate);
+        	}
+        }
+        cvs.onclick=function(){
+        	lastupdate=new Date();
+        	animate();
+        	// pause=!pause;
+        }
+        img_sky.src="../shared/images/sky.png";
+        img_tree1.src="../shared/images/smalltree.png";
+        img_tree2.src="../shared/images/tree-twotrunks.png";
+        img_grass1.src="../shared/images/grass.png";
+        img_grass2.src="../shared/images/grass2.png";
+        img_sky.onload=function(){
+        	draw();
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

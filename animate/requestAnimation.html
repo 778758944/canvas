@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <canvas id="cvs2" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        cvs2=document.getElementById("cvs2"),
+        ctx2=cvs2.getContext("2d");
+        discs = [
+      { 
+         x: 150,
+         y: 250,
+         lastX: 150,
+         lastY: 250,
+         velocityX: -3.2,
+         velocityY: 3.5,
+         radius: 25,
+         innerColor: 'rgba(255,255,0,1)',
+         middleColor: 'rgba(255,255,0,0.7)',
+         outerColor: 'rgba(255,255,0,0.5)',
+         strokeStyle: 'gray',
+      },
+
+      { 
+         x: 50,
+         y: 150,
+         lastX: 50,
+         lastY: 150,
+         velocityX: 2.2,
+         velocityY: 2.5,
+         radius: 25,
+         innerColor: 'rgba(100,145,230,1.0)',
+         middleColor: 'rgba(100,145,230,0.7)',
+         outerColor: 'rgba(100,145,230,0.5)',
+         strokeStyle: 'blue'
+      },
+
+      { 
+         x: 150,
+         y: 75,
+         lastX: 150,
+         lastY: 75,
+         velocityX: 1.2,
+         velocityY: 1.5,
+         radius: 25,
+         innerColor: 'rgba(255,0,0,1.0)',
+         middleColor: 'rgba(255,0,0,0.7)',
+         outerColor: 'rgba(255,0,0,0.5)',
+         strokeStyle: 'orange'
+      },
+   ],
+        width=cvs.width,
+        height=cvs.height,
+        pause=false,
+        timer="",
+        lasttime=0,
+        lastupdate=0,
+        lastupdatetime=0,
+        lasttime2=0,
+        timer2="";
+   function ani(){
+   	ctx.clearRect(0,0,width,height);
+    ctx.save();
+    ctx.fillStyle="#f00";
+    ctx.fillRect(0,0,width,height);
+    ctx.restore();
+   	for(var i=0;i<discs.length;i++){
+   		var cir=discs[i];
+   		if(cir.x+cir.velocityX+cir.radius>width||cir.x+cir.velocityX-cir.radius<0){
+   			cir.velocityX=-cir.velocityX;
+   		}
+   		if(cir.y+cir.velocityY+cir.radius>height||cir.y+cir.velocityY-cir.radius<0){
+   			cir.velocityY=-cir.velocityY;
+   		}
+   		cir.x=cir.x+cir.velocityX;
+   		cir.y=cir.y+cir.velocityY;
+   		var gradient=ctx.createRadialGradient(cir.x,cir.y,0,cir.x,cir.y,cir.radius);
+   		gradient.addColorStop(0.1,cir.innerColor);
+   		gradient.addColorStop(0.5,cir.middleColor);
+   		gradient.addColorStop(0.8,cir.outerColor);
+   		ctx.save();
+   		ctx.fillStyle=gradient;
+   		ctx.strokeStyle=cir.strokeStyle;
+   		ctx.beginPath();
+   		ctx.arc(cir.x,cir.y,cir.radius,0,Math.PI*2,false);
+   		ctx.fill();
+   		ctx.stroke();
+   		ctx.restore();
+      ctx.save();
+   	}
+   	var fps=calution();
+   	// console.log(fps);
+   	var now=new Date();
+   	if(now-lastupdatetime>1000){
+   		console.log("kkk");
+   		lastupdatetime=now;
+   		lastupdate=fps;
+   		console.log(fps);
+   		console.log(lastupdate);
+   	}
+   	ctx.save();
+   	ctx.font="30px Arial";
+   	console.log(lastupdate);
+   	ctx.fillText(lastupdate,0,100);
+   	ctx.restore();
+   	timer=requestAnimationFrame(ani);
+   	// ctx.clearRect(0,0,width,height);
+   }
+   function basetimeAni(){
+    ctx2.clearRect(0,0,width,height);
+    ctx2.save();
+    ctx2.fillStyle="#f00";
+    ctx2.fillRect(0,0,width,height);
+    ctx2.restore();
+
+    for(var i=0;i<discs.length;i++){
+      var cir=discs[i];
+      var now=new Date();
+      var speedX=cir.velocityX*(now-lasttime2)/1000;
+      var speedY=cir.velocityY*(now-lasttime2)/1000;
+      if(cir.x+speedX+cir.radius>width||cir.x+speedY-cir.radius<0){
+        speendX=-speedX
+      }
+      if(cir.y+speedY+cir.radius>height||cir.y+speedY-cir.radius<0){
+        speedY=-speedY;
+      }
+      cir.x=cir.x+speedX;
+      cir.y=cir.y+speedY;
+      lasttime2=now;
+      var gradient=ctx2.createRadialGradient(cir.x,cir.y,0,cir.x,cir.y,cir.radius);
+      gradient.addColorStop(0.3,cir.innerColor);
+      gradient.addColorStop(0.5,cir.middleColor);
+      gradient.addColorStop(0.8,cir.outerColor);
+      ctx2.save();
+      ctx2.fillStyle=gradient;
+      ctx2.strokeStyle=cir.strokeStyle;
+      ctx2.beginPath();
+      ctx2.arc(cir.x,cir.y,cir.radius,0,Math.PI*2,false);
+      ctx2.fill();
+      ctx2.stroke();
+      ctx2.restore();
+    }
+    var fps=calution();
+    // console.log(fps);
+    var now=new Date();
+    if(now-lastupdatetime>1000){
+      lastupdatetime=now;
+      lastupdate=fps;
+    }
+    ctx2.save();
+    ctx2.font="30px Arial";
+    // console.log(lastupdate);
+    ctx2.fillText(lastupdate,0,100);
+    ctx2.restore();
+    timer2=requestAnimationFrame(basetimeAni);
+
+   }
+   function calution(){
+   	var now=new Date();
+   	var fps=(1000/(now-lasttime)).toFixed(2);
+   	lasttime=now;
+   	return fps;
+   }
+   cvs.onclick=function(){
+   	if(pause){
+   		// alert("jj");
+   		// cancelAnimationFrame(timer);
+      cancelAnimationFrame(timer2);
+   	}
+   	else{
+   		lasttime2=lasttime=new Date();
+   		// alert("koko");
+   		// ani();
+      basetimeAni();
+   	}
+   	pause=pause? false:true;
+   }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
