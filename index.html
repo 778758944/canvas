@@ -82,6 +82,7 @@
             time.style.display='none';
             notice.style.color='#f00';
             notice.innerHTML='Game over';
+            cvs.onmousemove=null;
             cvs.removeEventListener('touchmove',handleMove,false);
         }
 
@@ -91,6 +92,8 @@
             time.style.display='none';
             notice.style.color='#0f0';
             notice.innerHTML='You won!';
+            cvs.onmousemove=null;
+            cvs.removeEventListener('touchmove',handleMove,false);
         }
 
 
@@ -204,7 +207,7 @@
         }
 
         function handleMove(e){
-            e.preventDefault();
+            // e.preventDefault();
             var touches=e.touches;
             if(dragshape&&!touches){
                 var pageX=e.pageX;
