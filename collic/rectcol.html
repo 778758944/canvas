@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="../shared/js/sprites.js"></script>
+<script src="../shared/js/stopWatch.js"></script>
+<script src="../shared/js/animationTimer.js"></script>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <div>
+    	<button id="start">start</button>
+    </div>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        ledge={
+        	x:300,
+        	y:400
+        },
+        origin={
+        	x:100,
+        	y:100
+        }
+        gravity=9.8,
+        pixelPerMeter=cvs.height/10,
+        radius=10,
+        start=document.getElementById("start"),
+        animationTimer=new AnimationTimer(3000);
+
+
+        function drawRect(x,y,col){
+        	ctx.save();
+        	ctx.fillStyle=col;
+        	ctx.fillRect(x,y,100,10);
+        	ctx.restore();
+        }
+
+        function isOnEdge(){
+        	return ball.left>origin.x+100;
+        }
+
+
+        moveball={
+        	lastMove:undefined,
+        	ballWillHitLedge:function(ledge){
+        		var ballRight=ball.left+radius;
+        		var ledgeRight=ledge.x+100;
+        		var ballbottom=ball.top+radius;
+        		var nextballbottom=ballbottom+ball.velocityY/60;
+        		// console.log(ball.velocityY);
+
+        		console.log(nextballbottom>ledge.y&&ballbottom<ledge.y);
+
+        		return ballRight>ledge.x&&
+        		       ball.left<ledgeRight&&
+        		       nextballbottom>ledge.y&&
+        		       ballbottom<ledge.y;
+        	},
+
+        	execute:function(sprite,ctx,time){
+        		if(this.ballWillHitLedge(ledge)){
+        			console.log("collision");
+        			sprite.top=ledge.y-radius;
+        			animationTimer.stop();
+        			console.log(sprite.top);
+        			return;
+        		}
+
+        		if(this.lastMove==undefined){
+        			this.lastMove=animationTimer.getElapsedTime();
+        			return;
+        		}
+
+        		var elapsed=(animationTimer.getElapsedTime()-this.lastMove)/1000;
+
+        		sprite.left=sprite.left+sprite.velocityX*elapsed;
+        		if(isOnEdge()){
+        			sprite.top=sprite.top+sprite.velocityY*elapsed;
+        			sprite.velocityY=sprite.velocityY+gravity*elapsed*pixelPerMeter;
+        		}
+        		this.lastMove=animationTimer.getElapsedTime();
+        	}
+        }
+
+        var ball=new Sprite("ball",{
+        	paint:function(sprite,ctx){
+        		ctx.save();
+        		ctx.fillStyle="#f00";
+        		ctx.beginPath();
+        		ctx.arc(sprite.left,sprite.top,radius,Math.PI*2,false);
+        		ctx.fill();
+        		ctx.restore();
+        	}
+        },[moveball]);
+
+        ball.left=origin.x+radius;
+        ball.top=origin.y-radius;
+        ball.velocityX=100;
+        ball.velocityY=0;
+
+        function animation(){
+        	if(animationTimer.isRunning()){
+        		ctx.clearRect(0,0,cvs.width,cvs.height);
+        		drawRect(ledge.x,ledge.y,"#00f");
+        		drawRect(origin.x,origin.y,"#0f0");
+        		ball.update(ctx);
+        		ball.paint(ctx);
+        	}
+        	requestAnimationFrame(animation);
+        }
+
+        start.onclick=function(){
+        	animationTimer.start();
+        }
+
+        animation();
+
+
+
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

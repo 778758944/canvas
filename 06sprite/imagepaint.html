@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="sprite.js"></script>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d");
+
+    //图像绘制器
+   var ImagePaint=function(url){
+   	this.img=new Image();
+   	this.img.src=url;
+   }
+   ImagePaint.prototype={
+   	paint:function(sprite,ctx){
+   		console.log(this.img.complete);
+   			// alert("koko");
+   			ctx.drawImage(this.img,sprite.left,sprite.top,sprite.width,sprite.height);
+   	}
+   };
+   var sprite=new Sprite("imgpaint",new ImagePaint("../shared/images/bomb.png"));
+   sprite.left=100;
+   sprite.right=100;
+   sprite.width=100;
+   sprite.height=100;
+   function animate(){
+   	ctx.clearRect(0,0,cvs.width,cvs.height);
+   	sprite.paint(ctx);
+   	requestAnimationFrame(animate);
+   }
+   animate();
+    </script>
+</body>
+</html>

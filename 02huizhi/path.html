@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs");
+    var ctx=cvs.getContext('2d');
+    var width=cvs.width;
+    var height=cvs.height;
+    function createGrid(color,step){
+    	ctx.save();
+    	ctx.lineWidth=0.5;
+    	ctx.strokeStyle=color;
+    	for(var i=0;i<cvs.height;i=i+step){
+    		ctx.beginPath();
+    		ctx.moveTo(0,i);
+    		ctx.lineTo(cvs.width,i);
+    		ctx.stroke();
+    		ctx.closePath();
+    	}
+    	for(var j=0;j<cvs.width;j=j+step){
+    		ctx.beginPath();
+    		ctx.moveTo(j,0);
+    		ctx.lineTo(j,cvs.height);
+    		ctx.stroke();
+    		ctx.closePath();
+    	}
+    	ctx.restore();
+    }
+    createGrid("gray",5);
+    ctx.strokeStyle="#f00";
+    ctx.beginPath();
+    ctx.arc(100,100,50,0,Math.PI*2,true);
+    ctx.closePath();//让路径闭合
+    ctx.stroke();
+
+    // ctx.beginPath();//去除之前路径的影响
+    ctx.arc(200,200,50,0,Math.PI,true);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.rect(300,300,50,100);
+    ctx.stroke();
+    ctx.rect(100,400,50,100);
+    ctx.stroke();
+
+    function drawtwoCir(){
+    	ctx.clearRect(0,0,width,height);
+    	ctx.beginPath();
+    	ctx.arc(100,100,50,0,Math.PI*2,true);
+    	ctx.arc(100,100,100,0,Math.PI*2,false);
+    	ctx.fillStyle="#f00";
+    	ctx.fill();
+    	ctx.shadowColor="#00f";
+    	ctx.shadowOffsetX=0;
+    	ctx.shadowOffsetY=0;
+    	ctx.stroke();
+    }
+    drawtwoCir();
+
+    function drawrect(x,y,w,h,deriction){
+    	// ctx.clearRect(0,0,width,height);
+    	if(deriction){
+    		ctx.moveTo(x,y);
+    		ctx.lineTo(x+w,y);
+    		ctx.lineTo(x+w,y+h);
+    		ctx.lineTo(x,y+h);
+    		ctx.lineTo(x,y);
+    		ctx.stroke();
+    	}else{
+    		ctx.moveTo(x,y);
+    		ctx.lineTo(x,y+h);
+    		ctx.lineTo(x+w,y+h);
+    		ctx.lineTo(x+w,y);
+    		ctx.lineTo(x,y);
+    		ctx.stroke();
+    	}
+    }
+    drawrect(200,200,100,100,true);
+    drawrect(230,230,40,40,false);
+    ctx.fill();
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

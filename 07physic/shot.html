@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="sprite.js"></script>
+<style>
+    #cvs{
+        border: 1px solid #000;
+    }
+</style>
+</head>
+<body>
+    <canvas id="cvs" width="1000" height="500"></canvas>
+    <div id="info">
+        <p>Launch velocity:<em id="speed"></em></p>
+        <p>Lanuch angel:<em id="angel"></em></p>
+    </div>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        h_left=50,
+        h_top=450,
+        h_width=100,
+        info=document.getElementById("info"),
+        speed=document.getElementById("speed"),
+        angel=document.getElementById("angel"),
+        gravity=9.81,
+        h=10,
+        pixelPerMeter=cvs.height/100,
+        lastMouse={};
+
+    function rect(){
+    	ctx.save();
+    	ctx.fillStyle="#f00";
+    	ctx.fillRect(h_left,h_top,h_width,20);
+    	ctx.restore();
+    }
+
+    function windowToCanvas(x,y){
+    	var box=cvs.getBoundingClientRect();
+    	return {
+    		x:x-box.left,
+    		y:y-box.top
+    	}
+    }
+
+    var moveball={
+        lastMove:undefined,
+        execute:function(sprite,ctx,time){
+            var now=new Date();
+            if(!this.lastMove){
+                this.lastMove=now;
+                return;
+            }
+            sprite.left=sprite.left+sprite.velocityX*((now-this.lastMove)/1000);
+            sprite.top=sprite.top+sprite.velocityY*((now-this.lastMove)/1000);
+            sprite.velocityY=sprite.velocityY+gravity*((now-this.lastMove)/1000)*pixelPerMeter;
+            // console.log(sprite.velocityY);
+            this.lastMove=now;
+        }
+    }
+
+    var ball=new Sprite("ball",{
+        paint:function(sprite,ctx){
+            ctx.save();
+            ctx.fillStyle="#f00";
+            ctx.beginPath();
+            ctx.arc(sprite.left,sprite.top,10,Math.PI*2,false);
+            ctx.fill();
+            ctx.restore();
+        }
+    },[moveball]);
+
+    ball.left=100;
+    ball.top=430;
+    ball.velocityY=0;
+    ball.velocityX=0;
+
+
+
+    cvs.onmousemove=function(e){
+        var loc=windowToCanvas(e.pageX,e.pageY),
+            deltaX=Math.abs(loc.x-ball.left),
+            deltaY=Math.abs(loc.y-ball.top),
+            launchAngel=Math.atan(deltaY/deltaX),
+            launchSpeed=4*deltaY/Math.sin(launchAngel)/pixelPerMeter;
+        lastMouse.x=loc.x;
+        lastMouse.y=loc.y;
+        angel.innerHTML=(launchAngel*180/Math.PI).toFixed(2);
+        speed.innerHTML=launchSpeed.toFixed(2);
+    }
+
+    cvs.onclick=function(e){
+        var loc=windowToCanvas(e.pageX,e.pageY),
+            deltaX=loc.x-ball.left,
+            deltaY=-(loc.y-ball.top),
+            launchAngel=Math.atan(deltaY/deltaX),
+            launchSpeed=4*deltaY/Math.sin(launchAngel)/pixelPerMeter;
+        lastMouse.x=loc.x;
+        lastMouse.y=loc.y;
+        angel.innerHTML=(launchAngel*180/Math.PI).toFixed(2);
+        speed.innerHTML=launchSpeed.toFixed(2);
+        ball.velocityX=launchSpeed*Math.cos(launchAngel);
+        ball.velocityY=-launchSpeed*Math.sin(launchAngel);
+    }
+
+
+    function animate(){
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        ctx.save();
+        ctx.strokeStyle="#000";
+        ctx.beginPath();
+        ctx.moveTo(ball.left,ball.top);
+        ctx.lineTo(lastMouse.x,lastMouse.y);
+        ctx.stroke();
+        ctx.restore();
+        ball.update(ctx);
+        ball.paint(ctx);
+        rect();
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    
+
+
+
+
+
+    </script>
+</body>
+</html>

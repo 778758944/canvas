@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs");
+    var ctx=cvs.getContext("2d");
+    ctx.beginPath();
+    ctx.moveTo(100,100);
+    ctx.quadraticCurveTo(100,400,300,300);
+    // ctx.quadraticCurveTo(190,250,210.5,160.5);
+    ctx.stroke();
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+    var ARROW_MARGIN = 30,
+    width=cvs.width;
+    height=cvs.height;
+    POINT_RADIUS = 7,
+    points = [
+       { x: cvs.width - ARROW_MARGIN,
+         y: cvs.height - ARROW_MARGIN },
+
+       { x: cvs.width - ARROW_MARGIN*2,
+         y: cvs.height - ARROW_MARGIN },
+
+       { x: POINT_RADIUS,
+         y: cvs.height/2 },
+
+       { x: ARROW_MARGIN, 
+         y: cvs.height/2 - ARROW_MARGIN },
+
+       { x: cvs.width - ARROW_MARGIN, 
+         y: ARROW_MARGIN },
+
+       { x: cvs.width - ARROW_MARGIN, 
+         y: ARROW_MARGIN*2 },
+    ];
+    function drawArrow(){
+    	ctx.beginPath();
+    	ctx.moveTo(width-ARROW_MARGIN,ARROW_MARGIN*2);
+    	ctx.lineTo(width-ARROW_MARGIN,height-ARROW_MARGIN*2);
+    	ctx.quadraticCurveTo(points[0].x,points[0].y,points[1].x,points[1].y);
+    	ctx.lineTo(ARROW_MARGIN,height/2+ARROW_MARGIN);
+    	ctx.quadraticCurveTo(points[2].x,points[2].y,points[3].x,points[3].y);
+    	ctx.lineTo(width-ARROW_MARGIN*2,ARROW_MARGIN);
+    	ctx.quadraticCurveTo(points[4].x,points[4].y,points[5].x,points[5].y);
+
+    	ctx.stroke();
+    }
+    function drawBesizerPoint(){
+    	var i,
+    	    strokeStyle,
+    	    fillStyle;
+    	for(i=0;i<points.length;i++){
+    		fillStyle=i%2===0? "white":"blue",
+    		strokeStyle=i%2===0? "blue":"white";
+    		drawPoint(points[i].x,points[i].y,strokeStyle,fillStyle);
+    	}
+    }
+    function drawPoint(x,y,strokeStyle,fillStyle){
+    	ctx.strokeStyle=strokeStyle;
+    	ctx.fillStyle=fillStyle;
+    	ctx.beginPath();
+    	ctx.arc(x,y,5,0,Math.PI*2,false);
+    	ctx.stroke();
+    	ctx.fill();
+    }
+    drawArrow();
+    drawBesizerPoint();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

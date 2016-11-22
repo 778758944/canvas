@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500" style="border:1px solid #000"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        img=new Image(),
+        imgData;
+    img.onload=function(){
+    	ctx.drawImage(img,0,0);
+    	imgData=ctx.getImageData(0,0,cvs.width,cvs.height);
+    	console.log(imgData);
+    	console.log(imgData.data[0]);
+    	console.log(imgData.data[1]);
+    	console.log(imgData.data[2]);
+    	console.log(imgData.data[3]);
+    }
+    img.src="countrypath.jpg";
+    cvs.onclick=function(){
+    	ctx.clearRect(0,0,cvs.width,cvs.height);
+    	ctx.putImageData(imgData,0,0,10,10,200,200);
+    }
+    //putImageData(img,dx,dy,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+    //dx,dy放置脏矩形的位置
+    //putImageData方法将整幅图像放在canvas中，然后剪切
+
+    </script>
+</body>
+</html>

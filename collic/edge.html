@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="../shared/js/sprites.js"></script>
+<script src="../shared/js/stopWatch.js"></script>
+<script src="../shared/js/animationTimer.js"></script>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500" style="border: 1px solid #000"></canvas>
+    <div><button id="start">start</button></div>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        radius=20,
+        start=document.getElementById("start"),
+        animationTimer=new AnimationTimer(3000);
+
+    moveball={
+    	lastMove:undefined,
+
+    	execute:function(sprite,ctx,time){
+    		if(!this.lastMove){
+    			this.lastMove=animationTimer.getElapsedTime();
+    			return;
+    		}
+    		var timer=animationTimer.getElapsedTime();
+
+    		var elapsed=(timer-this.lastMove)/1000;
+
+    		sprite.left=sprite.left+sprite.velocityX*elapsed;
+    		sprite.top=sprite.top+sprite.velocityY*elapsed;
+
+    		if(sprite.left>cvs.width-radius||sprite.left<radius){
+    			sprite.velocityX=-sprite.velocityX;
+    			if(sprite.left>cvs.width-radius){
+    				sprite.left=cvs.width-radius;
+    			}
+    			else{
+    				sprite.left=radius;
+    			}
+    		}
+
+    		if(sprite.top>cvs.height-radius||sprite.top<radius){
+    			sprite.velocityY=-sprite.velocityY;
+    			if(sprite.top>cvs.height-radius){
+    				sprite.top=cvs.height-radius;
+    			}
+    			else{
+    				sprite.top=radius;
+    			}
+    		}
+    		this.lastMove=timer;
+    	}
+    }
+
+    var ball=new Sprite("ball",{
+    	paint:function(sprite,ctx){
+    		ctx.save();
+    		ctx.fillStyle="#f00";
+    		ctx.beginPath();
+    		ctx.arc(sprite.left,sprite.top,radius,Math.PI*2,false);
+    		ctx.fill();
+    		ctx.restore();
+    	}
+    },[moveball]);
+
+    ball.velocityX=200;
+    ball.velocityY=250;
+
+
+    function animation(){
+    	if(animationTimer.isRunning()){
+    		ctx.clearRect(0,0,cvs.width,cvs.height);
+    		ball.update(ctx);
+    		ball.paint(ctx);
+    	}
+    	requestAnimationFrame(animation);
+    }
+
+    start.onclick=function(){
+    	animationTimer.start();
+    }
+
+    animation();
+
+
+
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

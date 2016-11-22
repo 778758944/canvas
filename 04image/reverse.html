@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+	<button id="reverse">reverse</button>
+	<button id="nocolor">nocolor</button>
+	<button id="emboss">emboss</button>
+	<button id="mojing">mojing</button>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        img=new Image(),
+        reverse=document.getElementById("reverse"),
+        nocolor=document.getElementById("nocolor"),
+        embos=document.getElementById("emboss"),
+        mojing=document.getElementById("mojing");
+    img.onload=function(){
+    	ctx.drawImage(img,0,0);
+    }
+    img.src="countrypath.jpg";
+    reverse.onclick=function(){
+    	var imgData=ctx.getImageData(0,0,cvs.width,cvs.height);
+    	var data=imgData.data;
+    	for(var i=0;i<data.length-4;i+=4){
+    		data[i]=255-data[i];
+    		data[i+1]=255-data[i+1];
+    		data[i+2]=255-data[i+2];
+    	}
+    	ctx.putImageData(imgData,0,0);
+    }
+    nocolor.onclick=function(){
+    	var imgData=ctx.getImageData(0,0,cvs.width,cvs.height);
+    	var data=imgData.data;
+    	for(var i=0;i<data.length-4;i+=4){
+    		var num=(data[i]+data[i+1]+data[i+2])/3;
+    		data[i]=num;
+    		data[i+1]=num;
+    		data[i+2]=num;
+    	}
+    	ctx.putImageData(imgData,0,0);
+    }
+    function emboss(){
+    	var imgData=ctx.getImageData(0,0,cvs.width,cvs.height);
+    	var data=imgData.data;
+    	var width=imgData.width;
+    	for(var i=0;i<data.length;i++){
+    		if((i+1)%4!==0){
+    			data[i]=255/2+2*data[i]-data[i+4]-data[i+width*4];
+    		}
+    	}
+    	ctx.putImageData(imgData,0,0);
+    }
+    embos.onclick=emboss;
+
+    function sunglass(){
+    	var sunglassworker=new Worker("sunglass.js");
+    	sunglassworker.postMessage(ctx.getImageData(0,0,cvs.width,cvs.height));
+    	sunglassworker.onmessage=function(e){
+    		var imgData=e.data;
+    		ctx.putImageData(imgData,0,0);
+    	}
+
+    }
+    mojing.onclick=sunglass;
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

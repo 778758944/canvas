@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="sprite.js"></script>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <script>
+    var cvs=document.getElementById("cvs");
+    var ctx=cvs.getContext("2d");
+    var spritesheet=new Image();
+    var lastupdate=0;
+    spritesheet.onload=function(){
+    	animate();
+    }
+    spritesheet.src="../shared/images/running-sprite-sheet.png";
+    var runnerCells = [
+      { left: 0,   top: 0, width: 47, height: 64 },
+      { left: 55,  top: 0, width: 44, height: 64 },
+      { left: 107, top: 0, width: 39, height: 64 },
+      { left: 150, top: 0, width: 46, height: 64 },
+      { left: 208, top: 0, width: 49, height: 64 },
+      { left: 265, top: 0, width: 46, height: 64 },
+      { left: 320, top: 0, width: 42, height: 64 },
+      { left: 380, top: 0, width: 35, height: 64 },
+      { left: 425, top: 0, width: 35, height: 64 },
+    ];
+    var Spritesheet=function(cells){
+    	this.cells=cells||[];
+    	this.cellIndex=0;
+    }
+    Spritesheet.prototype={
+    	advance:function(){
+    		if(this.cellIndex==this.cells.length-1){
+    			this.cellIndex=0;
+    		}
+    		else{
+    			this.cellIndex++;
+    		}
+    	},
+    	paint:function(sprite,ctx){
+    		console.log("pp");
+    		var cell=this.cells[this.cellIndex];
+    		ctx.drawImage(spritesheet,cell.left,cell.top,cell.width,cell.height,sprite.left,sprite.top,cell.width,cell.height);
+    		// this.advance();
+    	}
+    }
+    function animate(){
+    	// console.log("ss");
+    	ctx.clearRect(0,0,cvs.width,cvs.height);
+    	sprite.update(ctx,new Date());
+    	sprite.paint(ctx);
+    	requestAnimationFrame(animate);
+    }
+    var runInPlace={
+    	lastupdate:0,
+    	intervel:100,
+    	execute:function(sprite,ctx,now){
+    		if(now-this.lastupdate>this.intervel){
+    			sprite.painter.advance();
+    			this.lastupdate=now;
+    		}
+    	}
+    }
+    var move={
+    	lastmove:0,
+    	execute:function(sprite,ctx,now){
+    		console.log(sprite.left);
+    		sprite.left=sprite.left-sprite.velocityX*((now-this.lastmove)/1000);
+    		if(sprite.left<0){
+    			sprite.left=cvs.width;
+    		}
+    		this.lastmove=now;
+    	}
+    }
+    var sprite=new Sprite("spritesheet",new Spritesheet(runnerCells),[runInPlace,move]);
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

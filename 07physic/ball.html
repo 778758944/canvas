@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="sprite.js"></script>
+</head>
+<body>
+    <canvas id="cvs" width="500" height="500"></canvas>
+    <button id="btn">move</button>
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        h_left=400,
+        h_width=100,
+        h_top=100,
+        radius=25,
+        gravity=9.81,
+        meter=500,
+        pixelinmeter=(cvs.height-h_top)/meter;
+
+    var moveball={
+    	lastMove:undefined,
+    	fall:false,
+
+    	execute:function(sprite,context,time){
+    		var now=new Date();
+    		if(this.lastMove==undefined){
+    			this.lastMove=now;
+    			return;
+    		}
+
+    		sprite.left=sprite.left-sprite.velocityX*((now-this.lastMove)/1000);
+    		if(isOnEdge()){
+    			this.fall=true;
+    		}
+    		if(this.fall){
+    			sprite.top=sprite.top+sprite.velocityY*((now-this.lastMove)/1000);
+    			sprite.velocityY=(gravity*((now-this.lastMove)/1000))*pixelinmeter;
+    		}
+    	}
+    }
+
+    function isOnEdge(){
+    	return ball.left<h_left-radius;
+    }
+
+    var ball=new Sprite("ball",{
+    	paint:function(sprite,ctx){
+    		ctx.save();
+    		ctx.fillStyle="#f00";
+    		ctx.strokeStyle="#00f";
+    		ctx.beginPath();
+    		ctx.arc(sprite.left,sprite.top,radius,Math.PI*2,false);
+    		ctx.fill();
+    		ctx.stroke();
+    		ctx.restore();
+    	}
+    },[moveball]);
+    ball.top=h_top-radius;
+    ball.left=h_left+(h_width-radius*2);
+    ball.velocityY=0;
+    ball.velocityX=10;
+    function drawh(){
+    	ctx.save();
+    	ctx.fillStyle="#0f0";
+    	ctx.fillRect(h_left,h_top,h_width,10);
+    	ctx.restore();
+    }
+
+    function animate(){
+    	ctx.clearRect(0,0,cvs.width,cvs.height);
+    	drawh();
+    	ball.update(ctx);
+    	ball.paint(ctx);
+    	requestAnimationFrame(animate);
+    }
+
+    animate();
+
+
+    </script>
+</body>
+</html>
