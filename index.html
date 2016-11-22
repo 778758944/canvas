@@ -39,8 +39,8 @@
 		text-align: center;
 		line-height: 50px;
 		position: absolute;
-		left: 0px;
-		top: 500px;
+		right: 0px;
+		top: 0px;
 	}
     canvas{
         cursor: pointer;
@@ -202,12 +202,14 @@
                 return shapes[len-1];
             }
             else{
+                // console.log('no dong');
                 return null;
             }
         }
 
         function handleMove(e){
-            // e.preventDefault();
+            e.preventDefault();
+            // console.log('move');
             var touches=e.touches;
             if(dragshape&&!touches){
                 var pageX=e.pageX;
@@ -252,9 +254,12 @@
         }
 
         cvs.onmousedown=function(e){
+            e.preventDefault();
             dragshape=handleStart(e);
-            cvs.onmousemove=handleMove;
-            cvs.onmouseup=handleEnd;
+            if(dragshape){
+                cvs.onmousemove=handleMove;
+                cvs.onmouseup=handleEnd;
+            }
 
         }
 
@@ -265,9 +270,10 @@
             if(touches.length==1){
                 var touch=touches[0];
                 dragshape=handleStart(touch);
-                cvs.addEventListener('touchmove',handleMove,false);
-                cvs.addEventListener('touchend',handleEnd,false)
-
+                if(dragshape){
+                    cvs.addEventListener('touchmove',handleMove,false);
+                    cvs.addEventListener('touchend',handleEnd,false)
+                }
             }
         },false)
 
