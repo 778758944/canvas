@@ -48,7 +48,7 @@
 </style>
 </head>
 <body>
-    <canvas height=500></canvas>
+    <canvas height=300></canvas>
     <div class='start'>
 	    <p><span id='notice'></span>&nbsp;&nbsp;<span id='realStart'>start</span><p>
     </div>
@@ -71,7 +71,7 @@
             [new Point(300,300),new Point(500,300),new Point(500,350),new Point(300,350)]
         ],
         img=new Image(),
-        circle=new Circle(cvs.width-50,450,20),
+        circle=new Circle(cvs.width-60,280,20),
         collIndex,
         star=new ImageShape('./collic/star.jpg',20,20,30,30);
 
@@ -163,8 +163,8 @@
             cvs.onmouseup=null;
 
             
-            circle.x=cvs.width-50;
-            circle.y=450;
+            circle.x=cvs.width-60;
+            circle.y=280;
 
             if(collIndex){
                 shapes[collIndex].fillStyle='#ccc';
