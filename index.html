@@ -8,10 +8,9 @@
 <meta name="keywords" content="">
 <meta name="Viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no,minimum-scale=1" id="view">
 <link href="" rel="stylesheet">
-<script src="vector.js"></script>
-<script src="shape.js"></script>
-<script src="polygon.js"></script>
-<script src="../shared/js/sprites.js"></script>
+<script src="./collic/vector.js"></script>
+<script src="./collic/shape.js"></script>
+<script src="./collic/polygon.js"></script>
 <style>
 	*{
 		padding: 0;
@@ -74,7 +73,7 @@
         img=new Image(),
         circle=new Circle(cvs.width-50,450,20),
         collIndex,
-        star=new ImageShape('star.jpg',20,20,30,30);
+        star=new ImageShape('./collic/star.jpg',20,20,30,30);
 
 
         function fail(){
