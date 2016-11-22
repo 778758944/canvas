@@ -67,11 +67,11 @@
             [new Point(50,60),new Point(130,60),new Point(130,90),new Point(50,90)],
             [new Point(60,130),new Point(200,130),new Point(200,220),new Point(60,220)],
             [new Point(70,270),new Point(200,270),new Point(200,320),new Point(70,320)],
-            [new Point(420,0),new Point(500,0),new Point(500,200),new Point(420,200)],
+            [new Point(310,0),new Point(500,0),new Point(500,200),new Point(310,200)],
             [new Point(300,300),new Point(500,300),new Point(500,350),new Point(300,350)]
         ],
         img=new Image(),
-        circle=new Circle(cvs.width-60,280,20),
+        circle=new Circle(cvs.width-100,330,20),
         collIndex,
         star=new ImageShape('./collic/star.jpg',20,20,30,30);
 
@@ -163,8 +163,8 @@
             cvs.onmouseup=null;
 
             
-            circle.x=cvs.width-60;
-            circle.y=280;
+            circle.x=cvs.width-100;
+            circle.y=330;
 
             if(collIndex){
                 shapes[collIndex].fillStyle='#ccc';
