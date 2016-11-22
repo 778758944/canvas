@@ -25,7 +25,7 @@
 		left: 0;
 	}
 	.start p{
-		line-height: 500px;
+		line-height: 400px;
 		color: #fff;
 		text-align: center;
 		cursor: pointer;
@@ -48,7 +48,7 @@
 </style>
 </head>
 <body>
-    <canvas height=300></canvas>
+    <canvas height=400></canvas>
     <div class='start'>
 	    <p><span id='notice'></span>&nbsp;&nbsp;<span id='realStart'>start</span><p>
     </div>
@@ -64,9 +64,9 @@
         cvs.width=document.documentElement.clientWidth;
     	var timer,shapes=[],dragshape,mousedown={},
         polygonPoints=[
-            [new Point(50,80),new Point(130,80),new Point(130,130),new Point(50,130)],
-            [new Point(60,200),new Point(200,200),new Point(200,300),new Point(60,300)],
-            [new Point(70,350),new Point(200,350),new Point(200,420),new Point(70,420)],
+            [new Point(50,60),new Point(130,60),new Point(130,90),new Point(50,90)],
+            [new Point(60,130),new Point(200,130),new Point(200,220),new Point(60,220)],
+            [new Point(70,270),new Point(200,270),new Point(200,320),new Point(70,320)],
             [new Point(420,0),new Point(500,0),new Point(500,200),new Point(420,200)],
             [new Point(300,300),new Point(500,300),new Point(500,350),new Point(300,350)]
         ],
