@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="../shared/js/sprites.js"></script>
+<script src="../shared/js/stopWatch.js"></script>
+<script src="../shared/js/animationTimer.js"></script>
+</head>
+<body>
+    <canvas id="cvs" width="1000" height="500"></canvas>
+    <div>
+    	<button id="start">start</button>
+    </div>
+
+    <script>
+    var cvs=document.getElementById("cvs"),
+        ctx=cvs.getContext("2d"),
+        bucket={
+        	left:400,
+        	top:400,
+        	width:50
+        },
+        radius=10,
+        g=9.8,
+        pixelPerMeter=cvs.height/10,
+        img=new Image(),
+        start=document.getElementById("start"),
+        animationTimer=new AnimationTimer(3000),
+        moveball={
+        	lastMove:undefined,
+
+        	collision:function(){
+        		var xie=ball.velocityY/ball.velocityX;
+        		var b=ball.top-xie*ball.left;
+
+        		var x=(bucket.top-b)/xie;
+
+        		return x>bucket.left+20&&x<bucket.left+bucket.width&&ball.top>bucket.top&&ball.top<bucket.top+10;
+        	},
+
+        	execute:function(sprite,ctx,time){
+
+        		if(this.collision()){
+        			alert("bingo");
+        		}
+        		if(!this.lastMove){
+        			this.lastMove=animationTimer.getElapsedTime();
+        			return;
+        		}
+
+        		var timer=animationTimer.getElapsedTime();
+        		var elapsed=(timer-this.lastMove)/1000;
+
+        		sprite.left=sprite.left+sprite.velocityX*elapsed;
+        		sprite.top=sprite.top+sprite.velocityY*elapsed;
+
+        		sprite.velocityY=sprite.velocityY+g*elapsed*pixelPerMeter;
+
+        		this.lastMove=timer;
+        	}
+        }
+
+        var ball=new Sprite("ball",{
+        	paint:function(sprite,ctx){
+        		ctx.save();
+        		ctx.fillStyle="#f00";
+        		ctx.beginPath();
+        		ctx.arc(sprite.left,sprite.top,radius,Math.PI*2,false);
+        		ctx.fill();
+        		ctx.restore();
+        	}
+        },[moveball]);
+
+        ball.velocityX=240;
+        ball.velocityY=-400;
+        ball.top=430;
+        ball.left=50;
+
+        function drawRect(){
+        	ctx.save();
+        	ctx.fillStyle="#ff0";
+        	ctx.fillRect(50,450,100,20);
+        	ctx.restore();
+        }
+
+        function draw(){
+        	ctx.save();
+        	ctx.drawImage(img,bucket.left,bucket.top);
+        	ctx.restore();
+        }
+
+        function animation(){
+        	if(animationTimer.isRunning()){
+        		ctx.clearRect(0,0,cvs.width,cvs.height);
+        		drawRect();
+        		draw();
+        		ball.update(ctx);
+        		ball.paint(ctx);
+        	}
+        	requestAnimationFrame(animation);
+        }
+        img.src="../shared/images/bucket.png";
+
+        start.onclick=function(){
+        	animationTimer.start();
+        }
+
+        animation();
+
+
+
+
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

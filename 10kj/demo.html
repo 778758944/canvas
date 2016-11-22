@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="core.js"></script>
+</head>
+<body>
+    <input type="range" id="width" maximum="100" minimum="5"/>
+    <input type="range" id="height" maximum="100" minimum="5"/>
+    <div id="inner" style="width:500px; height:500px;"></div>
+    <script>
+    var width=document.getElementById("width"),
+        hieght=document.getElementById("height"),
+        inner=document.getElementById("inner"),
+        rect=new COREHTML5.Rect("#f00","#000",width.value,height.value);
+    function resize(){
+    	rect.resize(5*width.value,5*height.value);
+    	rect.erase();
+    	rect.draw();
+    }
+    width.onchange=resize;
+    height.onchange=resize;
+
+    rect.appendTo(inner);
+    rect.draw();
+
+    </script>
+</body>
+</html>
